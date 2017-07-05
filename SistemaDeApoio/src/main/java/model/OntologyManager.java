@@ -42,38 +42,10 @@ public class OntologyManager {
 
 		System.out.println("Loaded ontology: " + localOntology);
 		// We can always obtain the location where an ontology was loaded from
-		this.documentIRI = manager.getOntologyDocumentIRI(localOntology);
+		//this.documentIRI = manager.getOntologyDocumentIRI(localOntology);
+		this.documentIRI = IRI.create("http://www.semanticweb.org/root/ontologies/2017/5/untitled-ontology-2");
+		
 		System.out.println("    from: " + documentIRI);
-	}
-
-	public void createPropertyAssertions() throws Exception {
-		// We can specify the properties of an individual using property
-
-		OWLDataFactory factory = manager.getOWLDataFactory();
-
-		OWLIndividual investidor = factory.getOWLNamedIndividual(IRI
-				.create(documentIRI + "#investidor"));
-		OWLIndividual banco = factory.getOWLNamedIndividual(IRI
-				.create(documentIRI + "#bancos"));
-		OWLObjectProperty temConhecimento = factory.getOWLObjectProperty(IRI
-				.create(documentIRI + "#tem_conhecimento_previo"));
-
-		OWLObjectPropertyAssertionAxiom propertyAssertion = factory
-				.getOWLObjectPropertyAssertionAxiom(temConhecimento,
-						investidor, banco);
-		AddAxiom addAxiomChange = new AddAxiom(localOntology, propertyAssertion);
-		manager.applyChange(addAxiomChange);
-
-		OWLClass personClass = factory.getOWLClass(IRI.create(documentIRI
-				+ "#Investidor"));
-		OWLClassAssertionAxiom ax = factory.getOWLClassAssertionAxiom(
-				personClass, investidor);
-		// Add this axiom to our ontology - with a convenience method
-		manager.addAxiom(localOntology, ax);
-
-		manager.saveOntology(localOntology, new StreamDocumentTarget(
-				new ByteArrayOutputStream()));
-		saveOntology();
 	}
 
 	public void createPropertyAssertions(String proprerty, String instance1,
@@ -82,26 +54,20 @@ public class OntologyManager {
 
 		OWLDataFactory factory = manager.getOWLDataFactory();
 
-		OWLIndividual investidor = factory.getOWLNamedIndividual(IRI
+		OWLIndividual inst1 = factory.getOWLNamedIndividual(IRI
 				.create(documentIRI + "#" + instance1));
-		OWLIndividual banco = factory.getOWLNamedIndividual(IRI
+		OWLIndividual inst2 = factory.getOWLNamedIndividual(IRI
 				.create(documentIRI + "#" + instance2));
 		OWLObjectProperty temConhecimento = factory.getOWLObjectProperty(IRI
 				.create(documentIRI + "#" + proprerty));
 
 		OWLObjectPropertyAssertionAxiom propertyAssertion = factory
 				.getOWLObjectPropertyAssertionAxiom(temConhecimento,
-						investidor, banco);
+						inst1, inst2);
 		AddAxiom addAxiomChange = new AddAxiom(localOntology, propertyAssertion);
 		manager.applyChange(addAxiomChange);
 
-		OWLClass personClass = factory.getOWLClass(IRI.create(documentIRI
-				+ "#investidor"));
-		OWLClassAssertionAxiom ax = factory.getOWLClassAssertionAxiom(
-				personClass, investidor);
-		// Add this axiom to our ontology - with a convenience method
-		manager.addAxiom(localOntology, ax);
-
+		/*isnt required to define a class that a instance belongs, the reasoner should do this*/
 		manager.saveOntology(localOntology, new StreamDocumentTarget(
 				new ByteArrayOutputStream()));
 		saveOntology();
