@@ -31,10 +31,13 @@
         <Class IRI="#aspectos_do_investidor"/>
     </Declaration>
     <Declaration>
+        <DataProperty IRI="#tem_prazo"/>
+    </Declaration>
+    <Declaration>
         <Class IRI="#fundos_de_investimento"/>
     </Declaration>
     <Declaration>
-        <DataProperty IRI="#tem_prazo"/>
+        <NamedIndividual IRI="#sem_perspectiva"/>
     </Declaration>
     <Declaration>
         <Class IRI="#conhecimento"/>
@@ -49,16 +52,16 @@
         <Class IRI="#baixoRisco"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#agressivo"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#razoavelDinheiro"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="#acoes"/>
     </Declaration>
     <Declaration>
+        <Class IRI="#agressivo"/>
+    </Declaration>
+    <Declaration>
         <Class IRI="#muitoDinheiro"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#razoavelDinheiro"/>
     </Declaration>
     <Declaration>
         <Class IRI="#curtoPrazo"/>
@@ -106,6 +109,9 @@
         <ObjectProperty IRI="#tem_dinheiro"/>
     </Declaration>
     <Declaration>
+        <NamedIndividual IRI="#mestrando"/>
+    </Declaration>
+    <Declaration>
         <DataProperty IRI="#quantidade_dinheiro"/>
     </Declaration>
     <Declaration>
@@ -142,10 +148,10 @@
         <NamedIndividual IRI="#investidor"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual IRI="#bancos"/>
+        <Class IRI="#empresas"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#empresas"/>
+        <NamedIndividual IRI="#bancos"/>
     </Declaration>
     <Declaration>
         <ObjectProperty IRI="#tem_tolerancia_ao_risco"/>
@@ -184,13 +190,16 @@
         <Class IRI="#LCA"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#bolsa_de_valores"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="#dinheiro_disponivel"/>
     </Declaration>
     <Declaration>
+        <Class IRI="#bolsa_de_valores"/>
+    </Declaration>
+    <Declaration>
         <Class IRI="#tolerancia_ao_risco"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#Sem_Conhecimento"/>
     </Declaration>
     <Declaration>
         <Class IRI="#conhecimento_mercado_agricola"/>
@@ -204,9 +213,13 @@
     <Declaration>
         <Class IRI="#LCI"/>
     </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#sem_conhecimento_previo"/>
-    </Declaration>
+    <EquivalentClasses>
+        <Class IRI="#agressivo"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#muitoDinheiro"/>
+            <Class IRI="#toleranciaAlta"/>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
     <EquivalentClasses>
         <Class IRI="#altoRisco"/>
         <DataHasValue>
@@ -220,6 +233,13 @@
             <DataProperty IRI="#tem_risco"/>
             <Literal datatypeIRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral">baixo</Literal>
         </DataHasValue>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#conservador"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#sem_conhecimento_previo"/>
+            <Class IRI="#toleranciaBaixa"/>
+        </ObjectIntersectionOf>
     </EquivalentClasses>
     <EquivalentClasses>
         <Class IRI="#curtoPrazo"/>
@@ -264,11 +284,29 @@
         </DataHasValue>
     </EquivalentClasses>
     <EquivalentClasses>
+        <Class IRI="#moderado"/>
+        <ObjectIntersectionOf>
+            <ObjectComplementOf>
+                <Class IRI="#agressivo"/>
+            </ObjectComplementOf>
+            <ObjectComplementOf>
+                <Class IRI="#conservador"/>
+            </ObjectComplementOf>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
         <Class IRI="#pequenoRetorno"/>
         <DataHasValue>
             <DataProperty IRI="#tem_retorno"/>
             <Literal datatypeIRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral">pequeno</Literal>
         </DataHasValue>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#sem_conhecimento_previo"/>
+        <ObjectHasValue>
+            <ObjectProperty IRI="#tem_conhencimento_previo"/>
+            <NamedIndividual IRI="#Sem_Conhecimento"/>
+        </ObjectHasValue>
     </EquivalentClasses>
     <EquivalentClasses>
         <Class IRI="#toleranciaAlta"/>
@@ -379,13 +417,6 @@
         <Class IRI="#perfil"/>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="#agressivo"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="#tem_tolerancia_ao_risco"/>
-            <Class IRI="#toleranciaAlta"/>
-        </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
         <Class IRI="#altoRisco"/>
         <Class IRI="#risco"/>
     </SubClassOf>
@@ -430,20 +461,6 @@
         <ObjectSomeValuesFrom>
             <ObjectProperty IRI="#caracteristicas_do_perfil"/>
             <Class IRI="#conservador"/>
-        </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#conservador"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="#tem_conhencimento_previo"/>
-            <Class IRI="#sem_conhecimento_previo"/>
-        </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#conservador"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="#tem_tolerancia_ao_risco"/>
-            <Class IRI="#toleranciaBaixa"/>
         </ObjectSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
@@ -521,27 +538,6 @@
     <SubClassOf>
         <Class IRI="#muitoDinheiro"/>
         <Class IRI="#dinheiro_disponivel"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#muitoDinheiro"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="#caracteristicas_do_perfil"/>
-            <Class IRI="#agressivo"/>
-        </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#muitoDinheiro"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="#tem_dinheiro"/>
-            <Class IRI="#muitoDinheiro"/>
-        </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#muitoDinheiro"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="#tem_tolerancia_ao_risco"/>
-            <Class IRI="#toleranciaAlta"/>
-        </ObjectSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#pequenoRetorno"/>
@@ -726,6 +722,10 @@
         <Class IRI="#toleranciaBaixa"/>
     </DisjointClasses>
     <ClassAssertion>
+        <Class IRI="#sem_conhecimento_previo"/>
+        <NamedIndividual IRI="#Sem_Conhecimento"/>
+    </ClassAssertion>
+    <ClassAssertion>
         <Class IRI="#bancos"/>
         <NamedIndividual IRI="#bancos"/>
     </ClassAssertion>
@@ -745,10 +745,26 @@
         <Class IRI="#conhecimento_mercado_imobiliario"/>
         <NamedIndividual IRI="#mercado_imobiliario"/>
     </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#dinheiro_disponivel"/>
-        <NamedIndividual IRI="#sem_conhecimento_previo"/>
-    </ClassAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#tem_conhencimento_previo"/>
+        <NamedIndividual IRI="#mestrando"/>
+        <NamedIndividual IRI="#Sem_Conhecimento"/>
+    </ObjectPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tem_muito_dinheiro"/>
+        <NamedIndividual IRI="#investidor"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">10000.0</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tolerancia_risco"/>
+        <NamedIndividual IRI="#investidor"/>
+        <Literal datatypeIRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral">alta</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tolerancia_risco"/>
+        <NamedIndividual IRI="#mestrando"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">baixa</Literal>
+    </DataPropertyAssertion>
     <SubObjectPropertyOf>
         <ObjectProperty IRI="#caracteristicas_do_perfil"/>
         <ObjectProperty IRI="#propriedades_do_investidor"/>
@@ -843,7 +859,7 @@
     </DataPropertyDomain>
     <DataPropertyRange>
         <DataProperty IRI="#quantidade_dinheiro"/>
-        <Datatype abbreviatedIRI="xsd:float"/>
+        <Datatype abbreviatedIRI="xsd:double"/>
     </DataPropertyRange>
     <DataPropertyRange>
         <DataProperty IRI="#tem_dinheiro_razoavel"/>
@@ -872,12 +888,12 @@
     <DataPropertyRange>
         <DataProperty IRI="#tem_pouco_dinheiro"/>
         <DatatypeRestriction>
-            <Datatype abbreviatedIRI="xsd:float"/>
+            <Datatype abbreviatedIRI="xsd:double"/>
             <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
-                <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#float">0.0</Literal>
+                <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">0.0</Literal>
             </FacetRestriction>
             <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#maxInclusive">
-                <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#float">5000.0</Literal>
+                <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">5000.0</Literal>
             </FacetRestriction>
         </DatatypeRestriction>
     </DataPropertyRange>
@@ -916,5 +932,5 @@
 
 
 
-<!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->
+<!-- Generated by the OWL API (version 4.2.5.20160517-0735) https://github.com/owlcs/owlapi -->
 
