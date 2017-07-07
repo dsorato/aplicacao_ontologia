@@ -178,6 +178,9 @@
         <DataProperty IRI="#tolerancia_risco"/>
     </Declaration>
     <Declaration>
+        <NamedIndividual IRI="#i2"/>
+    </Declaration>
+    <Declaration>
         <Class IRI="#conservador"/>
     </Declaration>
     <Declaration>
@@ -269,7 +272,7 @@
         <Class IRI="#medioPrazo"/>
         <DataHasValue>
             <DataProperty IRI="#tem_prazo"/>
-            <Literal datatypeIRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral">curto</Literal>
+            <Literal datatypeIRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral">medio</Literal>
         </DataHasValue>
     </EquivalentClasses>
     <EquivalentClasses>
