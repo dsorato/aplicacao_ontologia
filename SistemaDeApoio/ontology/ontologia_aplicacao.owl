@@ -744,6 +744,10 @@
         <NamedIndividual IRI="#empresa"/>
     </ClassAssertion>
     <ClassAssertion>
+        <Class IRI="#acoes"/>
+        <NamedIndividual IRI="#i1"/>
+    </ClassAssertion>
+    <ClassAssertion>
         <Class IRI="#investidor"/>
         <NamedIndividual IRI="#i1"/>
     </ClassAssertion>

@@ -54,7 +54,6 @@ public class OntologyManager {
 	public OntologyManager() {
 
 	}
-	
 
 	public void loadOntology(String path) throws OWLOntologyCreationException {
 		/* Since we wont load our ontology from web, we have to load from a file */
@@ -118,57 +117,67 @@ public class OntologyManager {
 		saveOntology();
 
 	}
-	public void createReasoner(){
+
+	public void createReasoner() {
 		ConsoleProgressMonitor progressMonitor = new ConsoleProgressMonitor();
-		OWLReasonerConfiguration config = new SimpleConfiguration(progressMonitor);
+		OWLReasonerConfiguration config = new SimpleConfiguration(
+				progressMonitor);
 		OWLReasonerFactory reasonerFactory = new Reasoner.ReasonerFactory();
-		this.reasoner = reasonerFactory.createNonBufferingReasoner(localOntology, config);
+		this.reasoner = reasonerFactory.createNonBufferingReasoner(
+				localOntology, config);
 	}
-	public void reason(){
+
+	public void reason() {
 		this.reasoner.precomputeInferences();
 	}
 
 	public List<String> getClassInstances(String className) {
 		List<String> instances = new ArrayList<String>();
 		ConsoleProgressMonitor progressMonitor = new ConsoleProgressMonitor();
-		OWLReasonerConfiguration config = new SimpleConfiguration(progressMonitor);
+		OWLReasonerConfiguration config = new SimpleConfiguration(
+				progressMonitor);
 		OWLReasonerFactory reasonerFactory = new Reasoner.ReasonerFactory();
-		OWLReasoner reasoner = reasonerFactory.createNonBufferingReasoner(localOntology, config);
+		OWLReasoner reasoner = reasonerFactory.createNonBufferingReasoner(
+				localOntology, config);
 		// Ask the reasoner to precompute some inferences
 		reasoner.precomputeInferences();
 		OWLDataFactory factory = manager.getOWLDataFactory();
-		OWLClass owlClassName = factory.getOWLClass(IRI.create(documentIRI+"#"+className));
+		OWLClass owlClassName = factory.getOWLClass(IRI.create(documentIRI
+				+ "#" + className));
 
-		NodeSet<OWLNamedIndividual> individualsNodeSet = reasoner.getInstances(owlClassName, false);
+		NodeSet<OWLNamedIndividual> individualsNodeSet = reasoner.getInstances(
+				owlClassName, false);
 		Set<OWLNamedIndividual> individuals = individualsNodeSet.getFlattened();
 		for (OWLNamedIndividual ind : individuals) {
 			System.out.println("    " + ind);
 			instances.add(ind.toString());
 		}
-		
-		return instances;
-		
-	}
-	
-	public String getInstanceClass(String classN, String instanceName){
-		String className = "";
-		
-		OWLDataFactory factory = manager.getOWLDataFactory();
-		OWLClass owlClassName = factory.getOWLClass(IRI.create(documentIRI+"#"+classN));
 
-		NodeSet<OWLNamedIndividual> individualsNodeSet = reasoner.getInstances(owlClassName, false);
+		return instances;
+
+	}
+
+	public String getInstanceClass(String classN, String instanceName) {
+		String className = "";
+
+		OWLDataFactory factory = manager.getOWLDataFactory();
+		OWLClass owlClassName = factory.getOWLClass(IRI.create(documentIRI
+				+ "#" + classN));
+
+		NodeSet<OWLNamedIndividual> individualsNodeSet = reasoner.getInstances(
+				owlClassName, false);
 		Set<OWLNamedIndividual> individuals = individualsNodeSet.getFlattened();
 		System.out.println(individuals.isEmpty());
 		System.out.println("Instances of agressivo: ");
-		for (OWLNamedIndividual ind : individuals) {			
-			if(ind.toString().indexOf(documentIRI+"#"+instanceName) != -1){
-				System.out.println("Class for instanceName "+instanceName+" has been found "+classN);
+		for (OWLNamedIndividual ind : individuals) {
+			if (ind.toString().indexOf(documentIRI + "#" + instanceName) != -1) {
+				System.out.println("Class for instanceName " + instanceName
+						+ " has been found " + classN);
 			}
 			System.out.println("    " + ind);
 		}
 		System.out.println("\n");
 
-		
 		return className;
 	}
 
@@ -189,11 +198,13 @@ public class OntologyManager {
 		reasoner.precomputeInferences();
 		OWLDataFactory factory = manager.getOWLDataFactory();
 		System.out.println("is consistent " + reasoner.isConsistent());
-		
+
 		OWLClass agressivo = factory
-				.getOWLClass(IRI.create("http://www.semanticweb.org/root/ontologies/2017/5/untitled-ontology-2#agressivo"));
-		
-		NodeSet<OWLNamedIndividual> individualsNodeSet = reasoner.getInstances(agressivo, false);
+				.getOWLClass(IRI
+						.create("http://www.semanticweb.org/root/ontologies/2017/5/untitled-ontology-2#agressivo"));
+
+		NodeSet<OWLNamedIndividual> individualsNodeSet = reasoner.getInstances(
+				agressivo, false);
 		// The reasoner returns a NodeSet again. This time the NodeSet contains
 		// individuals. Again, we just want the individuals, so get a flattened
 		// set.
@@ -249,13 +260,23 @@ public class OntologyManager {
 		}
 	}
 
-
+	public void showClassAfterReasoning(String instance1) {
+		reason();
+		reasoner.precomputeInferences();
+		for (OWLClass c : localOntology.getClassesInSignature()) {
+			NodeSet<OWLNamedIndividual> instances = reasoner.getInstances(c,
+					true);
+			for (OWLNamedIndividual node : instances.getFlattened()) {
+				if (node.toString().indexOf(documentIRI + "#" + instance1) != -1) {
+					System.out.println(node + "\t" + c);
+				}
+			}
+		}
+	}
 
 	public void showInstancesProperties() throws Exception {
 		Set<OWLLogicalAxiom> axiomSet = localOntology.getLogicalAxioms();
 		java.util.Iterator<OWLLogicalAxiom> iteratorAxiom = axiomSet.iterator();
-		reason();
-		reasoner.precomputeInferences();
 
 		while (iteratorAxiom.hasNext()) {
 			OWLAxiom tempAx = iteratorAxiom.next();
@@ -276,7 +297,7 @@ public class OntologyManager {
 	 */
 	public String getInstanceResult(String instance) {
 		String classes = "";
-		
+
 		Set<OWLLogicalAxiom> axiomSet = localOntology.getLogicalAxioms();
 		java.util.Iterator<OWLLogicalAxiom> iteratorAxiom = axiomSet.iterator();
 		System.out.println(documentIRI.toString() + "#" + instance);
@@ -334,16 +355,15 @@ public class OntologyManager {
 
 			manager.loadOntology("/home/rr/workspace/aplicacao_ontologia/SistemaDeApoio/ontology/ontologia_aplicacao.owl");
 			manager.createReasoner();
-			
-			
+
 			// manager.createPropertyAssertions("tem_conhecimento_previo","investidor",
 			// "bancos");
 			// manager.createDataProperty("tem_risco", "investidor", "alto");
 			// manager.showInstancesDataProperty();
 			// manager.showInstancesDataProperty();
-			//manager.getClassInstances();
-			
-			System.out.println(manager.getInstanceClass("agressivo", "i1"));
+			// manager.getClassInstances();
+			manager.showClassAfterReasoning("i1");
+			// System.out.println(manager.getInstanceClass("agressivo", "i1"));
 
 			// manager.showClasses();
 			// manager.createPropertyAssertions();
