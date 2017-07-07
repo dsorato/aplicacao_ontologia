@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.swing.text.html.HTMLDocument.Iterator;
 
+import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.OWLXMLOntologyFormat;
 import org.semanticweb.owlapi.io.StreamDocumentTarget;
@@ -114,7 +115,7 @@ public class OntologyManager {
 
 	}
 
-	public void reosener() {
+	public void reasoner() {
 		ConsoleProgressMonitor progressMonitor = new ConsoleProgressMonitor();
 		OWLReasonerConfiguration config = new SimpleConfiguration(
 				progressMonitor);
@@ -122,7 +123,8 @@ public class OntologyManager {
 		// closure. Pass in the configuration.
 		// not using it in tests, we don't need the output
 		// OWLReasoner reasoner = reasonerFactory.createReasoner(o, config);
-		OWLReasonerFactory reasonerFactory = new StructuralReasonerFactory();
+		//OWLReasonerFactory reasonerFactory = new StructuralReasonerFactory();
+		OWLReasonerFactory reasonerFactory = new Reasoner.ReasonerFactory();
 		
 		OWLReasoner reasoner = reasonerFactory.createNonBufferingReasoner(localOntology,
 				config);
@@ -130,7 +132,7 @@ public class OntologyManager {
 		reasoner.precomputeInferences();
 		OWLDataFactory factory = manager.getOWLDataFactory();
 		System.out.println("is consistent " + reasoner.isConsistent());
-
+		
 		OWLClass agressivo = factory
 				.getOWLClass(IRI
 						.create("http://www.semanticweb.org/root/ontologies/2017/5/untitled-ontology-2#agressivo"));
@@ -276,7 +278,7 @@ public class OntologyManager {
 			// manager.createDataProperty("tem_risco", "investidor", "alto");
 			// manager.showInstancesDataProperty();
 			// manager.showInstancesProperties();
-			manager.reosener();
+			manager.reasoner();
 			// System.out.println(manager.getInstanceResult("investidor"));
 
 			// manager.showClasses();
