@@ -3,12 +3,16 @@ package model;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.OWLXMLOntologyFormat;
 import org.semanticweb.owlapi.io.StreamDocumentTarget;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -17,6 +21,7 @@ import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLLogicalAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
@@ -25,6 +30,15 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.model.PrefixManager;
+import org.semanticweb.owlapi.reasoner.ConsoleProgressMonitor;
+import org.semanticweb.owlapi.reasoner.InferenceType;
+import org.semanticweb.owlapi.reasoner.Node;
+import org.semanticweb.owlapi.reasoner.NodeSet;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
+import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
+import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
+import org.semanticweb.owlapi.reasoner.structural.StructuralReasonerFactory;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
@@ -84,15 +98,148 @@ public class OntologyManager {
 	public void createDataProperty(String property, String instance1,
 			String value) throws OWLOntologyStorageException, IOException {
 		OWLDataFactory factory = manager.getOWLDataFactory();
-		OWLIndividual inst1 = factory.getOWLNamedIndividual(IRI.create(documentIRI+"#"+instance1));
-		OWLDataProperty dataProperty = factory.getOWLDataProperty(IRI.create(documentIRI+"#"+property));
-		
-		OWLDatatype stringValue = factory.getOWLDatatype(OWL2Datatype.XSD_STRING.getIRI());
+		OWLIndividual inst1 = factory.getOWLNamedIndividual(IRI
+				.create(documentIRI + "#" + instance1));
+		OWLDataProperty dataProperty = factory.getOWLDataProperty(IRI
+				.create(documentIRI + "#" + property));
+
+		OWLDatatype stringValue = factory
+				.getOWLDatatype(OWL2Datatype.XSD_STRING.getIRI());
 		OWLLiteral literalValue = factory.getOWLLiteral(value, stringValue);
-		OWLDataPropertyAssertionAxiom dataPropertyAssertion = factory.getOWLDataPropertyAssertionAxiom(dataProperty, inst1, literalValue);
+		OWLDataPropertyAssertionAxiom dataPropertyAssertion = factory
+				.getOWLDataPropertyAssertionAxiom(dataProperty, inst1,
+						literalValue);
 		manager.addAxiom(localOntology, dataPropertyAssertion);
 		saveOntology();
+
+	}
+
+	public void reosener() {
+		ConsoleProgressMonitor progressMonitor = new ConsoleProgressMonitor();
+		OWLReasonerConfiguration config = new SimpleConfiguration(
+				progressMonitor);
+		// Create a reasoner that will reason over our ontology and its imports
+		// closure. Pass in the configuration.
+		// not using it in tests, we don't need the output
+		// OWLReasoner reasoner = reasonerFactory.createReasoner(o, config);
+		OWLReasonerFactory reasonerFactory = new StructuralReasonerFactory();
 		
+		OWLReasoner reasoner = reasonerFactory.createNonBufferingReasoner(localOntology,
+				config);
+		// Ask the reasoner to precompute some inferences
+		reasoner.precomputeInferences();
+		OWLDataFactory factory = manager.getOWLDataFactory();
+		System.out.println("is consistent " + reasoner.isConsistent());
+
+		OWLClass agressivo = factory
+				.getOWLClass(IRI
+						.create("http://www.semanticweb.org/root/ontologies/2017/5/untitled-ontology-2#agressivo"));
+
+		NodeSet<OWLNamedIndividual> individualsNodeSet = reasoner.getInstances(
+				agressivo, false);
+		// The reasoner returns a NodeSet again. This time the NodeSet contains
+		// individuals. Again, we just want the individuals, so get a flattened
+		// set.
+
+		Set<OWLNamedIndividual> individuals = individualsNodeSet.getFlattened();
+		System.out.println(individuals.isEmpty());
+		System.out.println("Instances of agressivo: ");
+		for (OWLNamedIndividual ind : individuals) {
+			System.out.println("    " + ind);
+		}
+		System.out.println("\n");
+	}
+
+	public void showInstancesDataProperty() throws Exception {
+
+		// Create a console progress monitor. This will print the reasoner
+		// progress out to the console.
+		ConsoleProgressMonitor progressMonitor = new ConsoleProgressMonitor();
+		OWLReasonerConfiguration config = new SimpleConfiguration(
+				progressMonitor);
+		// Create a reasoner that will reason over our ontology and its imports
+		// closure. Pass in the configuration.
+		// not using it in tests, we don't need the output
+		// OWLReasoner reasoner = reasonerFactory.createReasoner(o, config);
+		OWLReasonerFactory reasonerFactory = new StructuralReasonerFactory();
+		OWLReasoner reasoner = reasonerFactory.createReasoner(localOntology);
+		// Ask the reasoner to precompute some inferences
+		reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
+		// for each class, look up the instances
+		for (OWLClass c : localOntology.getClassesInSignature()) {
+
+			// the boolean argument specifies direct subclasses; false would
+			// specify all subclasses
+			// a NodeSet represents a set of Nodes.
+			// a Node represents a set of equivalent classes/or sameAs
+			// individuals
+			NodeSet<OWLNamedIndividual> instances = reasoner.getInstances(c,
+					false);
+			for (OWLNamedIndividual i : instances.getFlattened()) {
+				// look up all property assertions
+				System.out.println(i);
+
+				for (OWLDataProperty op : localOntology
+						.getDataPropertiesInSignature()) {
+
+					Set<OWLLiteral> valuesNodeSet = reasoner
+							.getDataPropertyValues(i, op);
+					for (OWLLiteral value : valuesNodeSet) {
+						System.out.println(value);
+					}
+				}
+			}
+		}
+	}
+
+	public void showInstancesProperties() throws Exception {
+		Set<OWLLogicalAxiom> axiomSet = localOntology.getLogicalAxioms();
+		java.util.Iterator<OWLLogicalAxiom> iteratorAxiom = axiomSet.iterator();
+
+		while (iteratorAxiom.hasNext()) {
+			OWLAxiom tempAx = iteratorAxiom.next();
+			if (!tempAx.getIndividualsInSignature().isEmpty()) {
+				System.out.println("Instance "
+						+ tempAx.getIndividualsInSignature());
+				System.out.println(tempAx.getDataPropertiesInSignature());
+				System.out.println(tempAx.getObjectPropertiesInSignature());
+				System.out.println("CLASS " + tempAx.getClassesInSignature());
+			}
+		}
+
+	}
+
+	/*
+	 * this method will return the results of a instance such as: Properties and
+	 * class
+	 */
+	public String getInstanceResult(String instance) {
+		String classes = "";
+		Set<OWLLogicalAxiom> axiomSet = localOntology.getLogicalAxioms();
+		java.util.Iterator<OWLLogicalAxiom> iteratorAxiom = axiomSet.iterator();
+		System.out.println(documentIRI.toString() + "#" + instance);
+		while (iteratorAxiom.hasNext()) {
+			OWLAxiom tempAx = iteratorAxiom.next();
+			if (!tempAx.getIndividualsInSignature().isEmpty()
+					&& !tempAx.getClassesInSignature().isEmpty()) {
+				System.out.println(tempAx.getIndividualsInSignature()
+						.toString());
+				System.out.println(tempAx.getIndividualsInSignature()
+						.toString().indexOf(instance));
+				if (tempAx.getIndividualsInSignature().toString()
+						.indexOf(instance) != -1) {
+					for (OWLClass owlClass : tempAx.getClassesInSignature()) {
+						System.out.println("class "
+								+ tempAx.getClassesInSignature());
+						classes += owlClass.toString() + "\n";
+					}
+
+				}
+
+			}
+		}
+		return classes;
+
 	}
 
 	public void saveOntology() throws IOException, OWLOntologyStorageException {
@@ -111,13 +258,28 @@ public class OntologyManager {
 		manager.removeOntology(localOntology);
 	}
 
+	public void showClasses() {
+		for (OWLClass owlClass : localOntology.getClassesInSignature()) {
+			System.out.println(owlClass);
+		}
+	}
+
 	public static void main(String[] args) {
 
 		OntologyManager manager = new OntologyManager();
 		try {
+			//
+
 			manager.loadOntology("/home/rr/workspace/aplicacao_ontologia/SistemaDeApoio/ontology/ontologia_aplicacao.owl");
-			//manager.createPropertyAssertions("tem_conhecimento_previo","investidor", "bancos");
-			manager.createDataProperty("tem_risco", "investidor", "alto");
+			// manager.createPropertyAssertions("tem_conhecimento_previo","investidor",
+			// "bancos");
+			// manager.createDataProperty("tem_risco", "investidor", "alto");
+			// manager.showInstancesDataProperty();
+			// manager.showInstancesProperties();
+			manager.reosener();
+			// System.out.println(manager.getInstanceResult("investidor"));
+
+			// manager.showClasses();
 			// manager.createPropertyAssertions();
 
 		} catch (Exception e) {
