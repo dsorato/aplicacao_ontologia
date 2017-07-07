@@ -99,20 +99,17 @@ public class OntologyManager {
 		saveOntology();
 	}
 
-	public void createDataProperty(String property, String instance1,
-			String value) throws OWLOntologyStorageException, IOException {
+	public void createDataProperty(String property, String instance1, String value, OWL2Datatype dataType) throws OWLOntologyStorageException, IOException {
 		OWLDataFactory factory = manager.getOWLDataFactory();
-		OWLIndividual inst1 = factory.getOWLNamedIndividual(IRI
-				.create(documentIRI + "#" + instance1));
-		OWLDataProperty dataProperty = factory.getOWLDataProperty(IRI
-				.create(documentIRI + "#" + property));
-
-		OWLDatatype stringValue = factory
-				.getOWLDatatype(OWL2Datatype.XSD_STRING.getIRI());
+		OWLIndividual inst1 = factory.getOWLNamedIndividual(IRI.create(documentIRI + "#" + instance1));
+		OWLDataProperty dataProperty = factory.getOWLDataProperty(IRI.create(documentIRI + "#" + property));
+		
+		
+		
+		//OWLDatatype stringValue = factory.getOWLDatatype(OWL2Datatype.XSD_STRING.getIRI()); //trocar o XSD_STRING POR ENUM
+		OWLDatatype stringValue = factory.getOWLDatatype(dataType.getIRI()); //trocar o XSD_STRING POR ENUM
 		OWLLiteral literalValue = factory.getOWLLiteral(value, stringValue);
-		OWLDataPropertyAssertionAxiom dataPropertyAssertion = factory
-				.getOWLDataPropertyAssertionAxiom(dataProperty, inst1,
-						literalValue);
+		OWLDataPropertyAssertionAxiom dataPropertyAssertion = factory.getOWLDataPropertyAssertionAxiom(dataProperty, inst1,literalValue);
 		manager.addAxiom(localOntology, dataPropertyAssertion);
 		saveOntology();
 
@@ -358,11 +355,11 @@ public class OntologyManager {
 
 			// manager.createPropertyAssertions("tem_conhecimento_previo","investidor",
 			// "bancos");
-			// manager.createDataProperty("tem_risco", "investidor", "alto");
+			manager.createDataProperty("tem_muito_dinheiro", "i2", "10000", OWL2Datatype.XSD_DOUBLE);
 			// manager.showInstancesDataProperty();
-			// manager.showInstancesDataProperty();
+			 
 			// manager.getClassInstances();
-			manager.showClassAfterReasoning("i1");
+			//manager.showClassAfterReasoning("i1");
 			// System.out.println(manager.getInstanceClass("agressivo", "i1"));
 
 			// manager.showClasses();
