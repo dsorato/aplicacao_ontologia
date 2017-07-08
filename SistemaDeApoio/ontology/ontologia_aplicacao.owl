@@ -265,17 +265,24 @@
         <Class IRI="#CDB"/>
         <ObjectIntersectionOf>
             <Class IRI="#baixoRisco"/>
-            <Class IRI="#longoPrazo"/>
+            <Class IRI="#medioPrazo"/>
             <Class IRI="#medioRetorno"/>
-            <Class IRI="#moderado"/>
             <ObjectUnionOf>
                 <Class IRI="#adulto"/>
                 <Class IRI="#jovem"/>
+            </ObjectUnionOf>
+            <ObjectUnionOf>
+                <Class IRI="#conservador"/>
+                <Class IRI="#moderado"/>
             </ObjectUnionOf>
             <ObjectHasValue>
                 <ObjectProperty IRI="#tem_conhencimento_previo"/>
                 <NamedIndividual IRI="#bancos"/>
             </ObjectHasValue>
+            <DataHasValue>
+                <DataProperty IRI="#tem_renda_fixa"/>
+                <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#boolean">true</Literal>
+            </DataHasValue>
         </ObjectIntersectionOf>
     </EquivalentClasses>
     <EquivalentClasses>
@@ -283,8 +290,11 @@
         <ObjectIntersectionOf>
             <Class IRI="#baixoRisco"/>
             <Class IRI="#medioPrazo"/>
-            <Class IRI="#moderado"/>
             <Class IRI="#pequenoRetorno"/>
+            <ObjectUnionOf>
+                <Class IRI="#conservador"/>
+                <Class IRI="#moderado"/>
+            </ObjectUnionOf>
             <ObjectComplementOf>
                 <Class IRI="#idoso"/>
             </ObjectComplementOf>
@@ -292,6 +302,10 @@
                 <ObjectProperty IRI="#tem_conhencimento_previo"/>
                 <NamedIndividual IRI="#mercado_agricola"/>
             </ObjectHasValue>
+            <DataHasValue>
+                <DataProperty IRI="#tem_renda_fixa"/>
+                <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#boolean">true</Literal>
+            </DataHasValue>
         </ObjectIntersectionOf>
     </EquivalentClasses>
     <EquivalentClasses>
@@ -311,15 +325,22 @@
                 <ObjectProperty IRI="#tem_conhencimento_previo"/>
                 <NamedIndividual IRI="#mercado_imobiliario"/>
             </ObjectHasValue>
+            <DataHasValue>
+                <DataProperty IRI="#tem_renda_fixa"/>
+                <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#boolean">true</Literal>
+            </DataHasValue>
         </ObjectIntersectionOf>
     </EquivalentClasses>
     <EquivalentClasses>
         <Class IRI="#RDB"/>
         <ObjectIntersectionOf>
             <Class IRI="#baixoRisco"/>
-            <Class IRI="#conservador"/>
             <Class IRI="#longoPrazo"/>
             <Class IRI="#medioRetorno"/>
+            <ObjectUnionOf>
+                <Class IRI="#conservador"/>
+                <Class IRI="#moderado"/>
+            </ObjectUnionOf>
             <ObjectComplementOf>
                 <Class IRI="#idoso"/>
             </ObjectComplementOf>
@@ -327,18 +348,25 @@
                 <ObjectProperty IRI="#tem_conhencimento_previo"/>
                 <NamedIndividual IRI="#bancos"/>
             </ObjectHasValue>
+            <DataHasValue>
+                <DataProperty IRI="#tem_renda_fixa"/>
+                <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#boolean">true</Literal>
+            </DataHasValue>
         </ObjectIntersectionOf>
     </EquivalentClasses>
     <EquivalentClasses>
         <Class IRI="#acoes"/>
         <ObjectIntersectionOf>
-            <Class IRI="#agressivo"/>
             <Class IRI="#altoRisco"/>
             <Class IRI="#grandeRetorno"/>
             <Class IRI="#longoPrazo"/>
             <ObjectUnionOf>
                 <Class IRI="#adulto"/>
                 <Class IRI="#jovem"/>
+            </ObjectUnionOf>
+            <ObjectUnionOf>
+                <Class IRI="#agressivo"/>
+                <Class IRI="#conservador"/>
             </ObjectUnionOf>
             <ObjectHasValue>
                 <ObjectProperty IRI="#tem_conhencimento_previo"/>
@@ -391,10 +419,16 @@
     <EquivalentClasses>
         <Class IRI="#debentures"/>
         <ObjectIntersectionOf>
-            <Class IRI="#altoRisco"/>
             <Class IRI="#grandeRetorno"/>
-            <Class IRI="#moderado"/>
-            <Class IRI="#pequenoRetorno"/>
+            <Class IRI="#longoPrazo"/>
+            <Class IRI="#medioRisco"/>
+            <ObjectUnionOf>
+                <Class IRI="#agressivo"/>
+                <Class IRI="#moderado"/>
+            </ObjectUnionOf>
+            <ObjectComplementOf>
+                <Class IRI="#idoso"/>
+            </ObjectComplementOf>
             <ObjectHasValue>
                 <ObjectProperty IRI="#tem_conhencimento_previo"/>
                 <NamedIndividual IRI="#empresa"/>
@@ -404,10 +438,13 @@
     <EquivalentClasses>
         <Class IRI="#fundos_de_investimento"/>
         <ObjectIntersectionOf>
-            <Class IRI="#agressivo"/>
             <Class IRI="#baixoRisco"/>
             <Class IRI="#curtoPrazo"/>
             <Class IRI="#medioRetorno"/>
+            <ObjectUnionOf>
+                <Class IRI="#agressivo"/>
+                <Class IRI="#moderado"/>
+            </ObjectUnionOf>
             <ObjectHasValue>
                 <ObjectProperty IRI="#tem_conhencimento_previo"/>
                 <NamedIndividual IRI="#Sem_Conhecimento"/>
@@ -509,9 +546,12 @@
         <Class IRI="#titulos_publicos"/>
         <ObjectIntersectionOf>
             <Class IRI="#baixoRisco"/>
-            <Class IRI="#conservador"/>
             <Class IRI="#medioPrazo"/>
             <Class IRI="#medioRetorno"/>
+            <ObjectUnionOf>
+                <Class IRI="#conservador"/>
+                <Class IRI="#moderado"/>
+            </ObjectUnionOf>
             <ObjectHasValue>
                 <ObjectProperty IRI="#tem_conhencimento_previo"/>
                 <NamedIndividual IRI="#Sem_Conhecimento"/>
@@ -907,12 +947,12 @@
     <ObjectPropertyAssertion>
         <ObjectProperty IRI="#faixa_etaria"/>
         <NamedIndividual IRI="#adulto_conservador"/>
-        <NamedIndividual IRI="#meia_idade"/>
+        <NamedIndividual IRI="#jovem"/>
     </ObjectPropertyAssertion>
     <ObjectPropertyAssertion>
         <ObjectProperty IRI="#tem_conhencimento_previo"/>
         <NamedIndividual IRI="#adulto_conservador"/>
-        <NamedIndividual IRI="#bancos"/>
+        <NamedIndividual IRI="#Sem_Conhecimento"/>
     </ObjectPropertyAssertion>
     <ObjectPropertyAssertion>
         <ObjectProperty IRI="#tem_conhencimento_previo"/>
@@ -950,14 +990,19 @@
         <NamedIndividual IRI="#bancos"/>
     </ObjectPropertyAssertion>
     <DataPropertyAssertion>
-        <DataProperty IRI="#tem_dinheiro_razoavel"/>
+        <DataProperty IRI="#tem_pouco_dinheiro"/>
         <NamedIndividual IRI="#adulto_conservador"/>
-        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">6000.0</Literal>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">3000.0</Literal>
     </DataPropertyAssertion>
     <DataPropertyAssertion>
         <DataProperty IRI="#tem_prazo"/>
         <NamedIndividual IRI="#adulto_conservador"/>
-        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">longo</Literal>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">medio</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tem_renda_fixa"/>
+        <NamedIndividual IRI="#adulto_conservador"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#boolean">true</Literal>
     </DataPropertyAssertion>
     <DataPropertyAssertion>
         <DataProperty IRI="#tem_retorno"/>
