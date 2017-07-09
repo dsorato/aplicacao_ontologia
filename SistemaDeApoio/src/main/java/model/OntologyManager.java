@@ -263,7 +263,7 @@ public class OntologyManager {
 	}
 
 	public void showClassAfterReasoning(String instance1) {
-		reason();
+		//reason();
 		reasoner.precomputeInferences();
 		for (OWLClass c : localOntology.getClassesInSignature()) {
 			NodeSet<OWLNamedIndividual> instances = reasoner.getInstances(c,
