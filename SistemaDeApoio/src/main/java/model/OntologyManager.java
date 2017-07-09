@@ -54,6 +54,10 @@ public class OntologyManager {
 	public OntologyManager() {
 
 	}
+        
+        public OntologyManager(String path){
+            
+        }
 
 	public void loadOntology(String path) throws OWLOntologyCreationException {
 		/* Since we wont load our ontology from web, we have to load from a file */
@@ -111,7 +115,7 @@ public class OntologyManager {
 		OWLLiteral literalValue = factory.getOWLLiteral(value, stringValue);
 		OWLDataPropertyAssertionAxiom dataPropertyAssertion = factory.getOWLDataPropertyAssertionAxiom(dataProperty, inst1,literalValue);
 		manager.addAxiom(localOntology, dataPropertyAssertion);
-		saveOntology();
+		//saveOntology();
 
 	}
 
@@ -226,7 +230,7 @@ public class OntologyManager {
 		// closure. Pass in the configuration.
 		// not using it in tests, we don't need the output
 		// OWLReasoner reasoner = reasonerFactory.createReasoner(o, config);
-		OWLReasonerFactory reasonerFactory = new StructuralReasonerFactory();
+		OWLReasonerFactory reasonerFactory = new Reasoner.ReasonerFactory();
 		OWLReasoner reasoner = reasonerFactory.createReasoner(localOntology);
 		// Ask the reasoner to precompute some inferences
 		reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
@@ -323,7 +327,8 @@ public class OntologyManager {
 	}
 
 	public void saveOntology() throws IOException, OWLOntologyStorageException {
-		File output = File.createTempFile("new_ontology", "owl");
+		//File output = File.createTempFile("new_ontology", "owl");
+                File output = new File("new_ontology", "owl");
 		IRI documentIRI2 = IRI.create(output);
 		// save in OWL/XML format
 		manager.saveOntology(localOntology, new OWLXMLOntologyFormat(),
@@ -355,8 +360,8 @@ public class OntologyManager {
 
 			// manager.createPropertyAssertions("tem_conhecimento_previo","investidor",
 			// "bancos");
-			manager.createDataProperty("tem_muito_dinheiro", "i2", "10000", OWL2Datatype.XSD_DOUBLE);
-			// manager.showInstancesDataProperty();
+			manager.createDataProperty("tem_muito_dinheiro", "i1", "10000", OWL2Datatype.XSD_DOUBLE);
+			manager.showInstancesDataProperty();
 			 
 			// manager.getClassInstances();
 			//manager.showClassAfterReasoning("i1");
