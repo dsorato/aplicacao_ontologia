@@ -1,15 +1,17 @@
 package model;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 public class Preferences {
 
-    private String _risco, _prazo, _tolerancia, _area, _idade, _salario, _opcao, _retorno;
+    private String _risco, _prazo, _tolerancia, _area, _idade, _salario, _opcao, _retorno, _path;
 
     public Preferences(String risco, String prazo, String tolerancia,
             String area, String idade, String salario, String opcao, String retorno) {
@@ -24,12 +26,16 @@ public class Preferences {
 
     }
 
-    public Preferences(String tolerancia, String area, String idade, String salario, String opcao, String retorno) {
+    public Preferences(String tolerancia, String area, String idade, String salario, String opcao, String retorno, String path) {
         if (area.equalsIgnoreCase("Nenhuma das opções")) {
             this._area = "Sem_Conhecimento"; //GAMBIAAAAAAAAARRA
         } else {
             this._area = area.toLowerCase();
         }
+        
+        this._path = path;
+        
+              
 
         this._idade = idade.toLowerCase();
         this._retorno = retorno.toLowerCase();
@@ -39,13 +45,13 @@ public class Preferences {
 
     }
 
-    public static void main(String[] args) throws IOException, Exception {
-        Preferences pf = new Preferences("false", "bancos", "17", "10000", "casa", "sim");
+    /*public static void main(String[] args) throws IOException, Exception {
+        Preferences pf = new Preferences("false", "bancos", "17", "10000", "casa", "sim", "./ontologia_aplicacao.owl");
         pf.createProperties();
-    }
+    }*/
 
     public void createProperties() throws OWLOntologyStorageException, IOException, Exception {
-        String path = "/home/rr/NetBeansProjects/aplicacao_ontologia/SistemaDeApoio/ontologia_aplicacao.owl";
+        
         OntologyManager om = new OntologyManager();
         try {
             System.out.println("area " + _area); //mudar áreas
@@ -57,7 +63,7 @@ public class Preferences {
             System.out.println(defineRetorno());
             System.out.println(defineDinheiro());
 
-            om.loadOntology(path);
+            om.loadOntology(_path);
             om.createReasoner();
             om.createPropertyAssertions("faixa_etaria", "i3", defineFaixaEtaria());
             om.createPropertyAssertions("tem_conhecimento_previo", "i3", defineObjectType(_area));
@@ -67,7 +73,14 @@ public class Preferences {
             om.createPropertyAssertions("pretensao", "i3", defineObjectType(_opcao));
             om.createDataProperty(defineDinheiro(), "i3", _salario, OWL2Datatype.XSD_DOUBLE);
 
-            om.showClassAfterReasoning("i3");
+            //om.showClassAfterReasoning("i3");
+            List<String> result = om.showClassAfterReasoningOfInstance("i3");
+            /*tratamento da string, sei que eu não deveria fazer aqui, mas*/
+            String investimento = result.get(0).replace("http://www.semanticweb.org/root/ontologies/2017/5/untitled-ontology-2#", "").replace("<", "").replace(">", "");
+            String perfil = result.get(1).replace("http://www.semanticweb.org/root/ontologies/2017/5/untitled-ontology-2#", "").replace("<", "").replace(">", "");
+            String final_Result = "perfil de investimento: "+perfil + "\n Investimento(s): "+investimento;
+            JOptionPane.showMessageDialog(null, final_Result);
+            
             //om.showInstancesDataProperty();
             //om.showInstancesProperties();
             om.saveOntology();

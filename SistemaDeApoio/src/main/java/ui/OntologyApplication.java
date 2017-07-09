@@ -1,6 +1,7 @@
 package ui;
 
 import java.io.IOException;
+import javax.swing.JOptionPane;
 import model.Preferences;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 
@@ -48,7 +49,11 @@ public class OntologyApplication {
             if(mf.definido){
                 mf.definido = false;
                 //"false", "bancos", "17", "10000", "casa", "sim");
-                Preferences pf = new Preferences(mf.tolerancia, mf.area, mf.idade, mf.salario, mf.opcao, mf.risco);
+                String path = "./ontologia_aplicacao.owl";
+                if(mf.path.isEmpty()){
+                 //   JOptionPane.showMessageDialog(null, "VOCÊ NÃO SELECIONOU A ONTOLOGIA.");
+                }
+                Preferences pf = new Preferences(mf.tolerancia, mf.area, mf.idade, mf.salario, mf.opcao, mf.risco, path);
                 pf.createProperties();
                 
                 
