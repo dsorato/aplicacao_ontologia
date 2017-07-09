@@ -315,19 +315,10 @@
     </EquivalentClasses>
     <EquivalentClasses>
         <Class IRI="#acoes"/>
-        <ObjectUnionOf>
-            <ObjectIntersectionOf>
-                <Class IRI="#altoRisco"/>
-                <Class IRI="#toleranciaAlta"/>
-            </ObjectIntersectionOf>
-            <ObjectIntersectionOf>
-                <Class IRI="#altoRisco"/>
-                <Class IRI="#toleranciaAlta"/>
-                <ObjectComplementOf>
-                    <Class IRI="#idoso"/>
-                </ObjectComplementOf>
-            </ObjectIntersectionOf>
-        </ObjectUnionOf>
+        <ObjectIntersectionOf>
+            <Class IRI="#altoRisco"/>
+            <Class IRI="#toleranciaAlta"/>
+        </ObjectIntersectionOf>
     </EquivalentClasses>
     <EquivalentClasses>
         <Class IRI="#adulto"/>
@@ -339,7 +330,7 @@
     <EquivalentClasses>
         <Class IRI="#agressivo"/>
         <ObjectIntersectionOf>
-            <Class IRI="#muitoDinheiro"/>
+            <Class IRI="#altoRisco"/>
             <Class IRI="#toleranciaAlta"/>
         </ObjectIntersectionOf>
     </EquivalentClasses>
@@ -348,7 +339,7 @@
         <ObjectUnionOf>
             <ObjectIntersectionOf>
                 <Class IRI="#curtoPrazo"/>
-                <Class IRI="#medioRetorno"/>
+                <Class IRI="#grandeRetorno"/>
             </ObjectIntersectionOf>
             <ObjectIntersectionOf>
                 <Class IRI="#grandeRetorno"/>
@@ -361,7 +352,7 @@
         <ObjectUnionOf>
             <ObjectIntersectionOf>
                 <Class IRI="#curtoPrazo"/>
-                <Class IRI="#grandeRetorno"/>
+                <Class IRI="#medioRetorno"/>
             </ObjectIntersectionOf>
             <ObjectIntersectionOf>
                 <Class IRI="#longoPrazo"/>

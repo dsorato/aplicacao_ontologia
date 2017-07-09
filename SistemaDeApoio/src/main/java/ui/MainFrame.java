@@ -56,7 +56,7 @@ public class MainFrame extends javax.swing.JFrame {
         setTitle("Sistema de apoio à decisão de investimentos");
         setResizable(false);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bancos", "Mercado imobilário", "Mercado agrícola", "Bolsa de valores", "Empresas", "Nenhuma das opções" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bancos", "Mercado imobiliario", "Mercado agricola", "Bolsa de valores", "Empresa", "Nenhuma das opções" }));
 
         jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rapido", "Demorado" }));
 

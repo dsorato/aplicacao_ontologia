@@ -266,8 +266,7 @@ public class OntologyManager {
 		//reason();
 		reasoner.precomputeInferences();
 		for (OWLClass c : localOntology.getClassesInSignature()) {
-			NodeSet<OWLNamedIndividual> instances = reasoner.getInstances(c,
-					true);
+			NodeSet<OWLNamedIndividual> instances = reasoner.getInstances(c,false);
 			for (OWLNamedIndividual node : instances.getFlattened()) {
 				if (node.toString().indexOf(documentIRI + "#" + instance1) != -1) {
 					System.out.println(node + "\t" + c);

@@ -161,10 +161,10 @@
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="6">
                     <StringItem index="0" value="Bancos"/>
-                    <StringItem index="1" value="Mercado imobil&#xe1;rio"/>
-                    <StringItem index="2" value="Mercado agr&#xed;cola"/>
+                    <StringItem index="1" value="Mercado imobiliario"/>
+                    <StringItem index="2" value="Mercado agricola"/>
                     <StringItem index="3" value="Bolsa de valores"/>
-                    <StringItem index="4" value="Empresas"/>
+                    <StringItem index="4" value="Empresa"/>
                     <StringItem index="5" value="Nenhuma das op&#xe7;&#xf5;es"/>
                   </StringArray>
                 </Property>
