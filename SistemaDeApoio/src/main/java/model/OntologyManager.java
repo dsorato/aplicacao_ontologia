@@ -91,16 +91,16 @@ public class OntologyManager {
 		OWLObjectPropertyAssertionAxiom propertyAssertion = factory
 				.getOWLObjectPropertyAssertionAxiom(temConhecimento, inst1,
 						inst2);
-		AddAxiom addAxiomChange = new AddAxiom(localOntology, propertyAssertion);
-		manager.applyChange(addAxiomChange);
+		//AddAxiom addAxiomChange = new AddAxiom(localOntology, propertyAssertion);
+		manager.addAxiom(localOntology, propertyAssertion);
 
 		/*
 		 * isnt required to define a class that a instance belongs, the reasoner
 		 * should do this
-		 */
+		 
 		manager.saveOntology(localOntology, new StreamDocumentTarget(
 				new ByteArrayOutputStream()));
-		saveOntology();
+		saveOntology();*/
 	}
 
 	public void createDataProperty(String property, String instance1, String value, OWL2Datatype dataType) throws OWLOntologyStorageException, IOException {
@@ -231,9 +231,9 @@ public class OntologyManager {
 		// not using it in tests, we don't need the output
 		// OWLReasoner reasoner = reasonerFactory.createReasoner(o, config);
 		OWLReasonerFactory reasonerFactory = new Reasoner.ReasonerFactory();
-		OWLReasoner reasoner = reasonerFactory.createReasoner(localOntology);
+		OWLReasoner localreasoner = reasonerFactory.createReasoner(localOntology);
 		// Ask the reasoner to precompute some inferences
-		reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
+		localreasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
 		// for each class, look up the instances
 		for (OWLClass c : localOntology.getClassesInSignature()) {
 
@@ -242,7 +242,7 @@ public class OntologyManager {
 			// a NodeSet represents a set of Nodes.
 			// a Node represents a set of equivalent classes/or sameAs
 			// individuals
-			NodeSet<OWLNamedIndividual> instances = reasoner.getInstances(c,
+			NodeSet<OWLNamedIndividual> instances = localreasoner.getInstances(c,
 					false);
 			for (OWLNamedIndividual i : instances.getFlattened()) {
 				// look up all property assertions
@@ -251,8 +251,9 @@ public class OntologyManager {
 				for (OWLDataProperty op : localOntology
 						.getDataPropertiesInSignature()) {
 
-					Set<OWLLiteral> valuesNodeSet = reasoner
+					Set<OWLLiteral> valuesNodeSet = localreasoner
 							.getDataPropertyValues(i, op);
+                                        System.out.println(op);
 					for (OWLLiteral value : valuesNodeSet) {
 						System.out.println(value);
 					}
@@ -328,7 +329,7 @@ public class OntologyManager {
 
 	public void saveOntology() throws IOException, OWLOntologyStorageException {
 		//File output = File.createTempFile("new_ontology", "owl");
-                File output = new File("new_ontology", "owl");
+                File output = new File("new_ontology.owl");
 		IRI documentIRI2 = IRI.create(output);
 		// save in OWL/XML format
 		manager.saveOntology(localOntology, new OWLXMLOntologyFormat(),
@@ -355,13 +356,17 @@ public class OntologyManager {
 		try {
 			//
 
-			manager.loadOntology("/home/rr/workspace/aplicacao_ontologia/SistemaDeApoio/ontology/ontologia_aplicacao.owl");
+			manager.loadOntology("/home/rr/NetBeansProjects/aplicacao_ontologia/SistemaDeApoio/ontology/ontologia_aplicacao.owl");
 			manager.createReasoner();
 
 			// manager.createPropertyAssertions("tem_conhecimento_previo","investidor",
 			// "bancos");
-			manager.createDataProperty("tem_muito_dinheiro", "i1", "10000", OWL2Datatype.XSD_DOUBLE);
+                       manager.createPropertyAssertions("tem_conhecimento_previo", "i1", "bancos");
+              
+              
+			manager.createDataProperty("tolerancia_risco", "i1", "alta", OWL2Datatype.XSD_STRING);
 			manager.showInstancesDataProperty();
+                        manager.saveOntology();
 			 
 			// manager.getClassInstances();
 			//manager.showClassAfterReasoning("i1");

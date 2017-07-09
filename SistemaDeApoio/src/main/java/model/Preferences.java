@@ -11,13 +11,13 @@ public class Preferences {
       private String _risco, _prazo, _tolerancia, _area, _idade, _salario, _opcao;
       public Preferences(String risco, String prazo, String tolerancia,
               String area, String  idade, String  salario, String opcao){
-       this._area = area;
-       this._idade = idade;
-       this._prazo = prazo;
-       this._risco = risco;
-       this._salario = salario;
-       this._opcao = opcao;
-       this._tolerancia = tolerancia;
+       this._area = area.toLowerCase();
+       this._idade = idade.toLowerCase();
+       this._prazo = prazo.toLowerCase();
+       this._risco = risco.toLowerCase();
+       this._salario = salario.toLowerCase();
+       this._opcao = opcao.toLowerCase();
+       this._tolerancia = tolerancia.toLowerCase();
        
           
       }
@@ -29,11 +29,14 @@ public class Preferences {
               System.out.println(_area);
               System.out.println(_idade);
               System.out.println(_prazo);
-              System.out.print(_risco);
+              System.out.println(_risco);
+              System.out.println(_tolerancia);
               om.loadOntology(path);
               om.createReasoner();
-              om.createDataProperty("tem_risco", "i1", _risco.toLowerCase(), OWL2Datatype.XSD_STRING);
+              om.createPropertyAssertions("tem_conhecimento_previo", "i1", _area);
+              om.createDataProperty("tolerancia_risco", "i1", _tolerancia, OWL2Datatype.XSD_STRING);
               om.showInstancesDataProperty();
+              om.saveOntology();
               
           } catch (OWLOntologyCreationException ex) {
               Logger.getLogger(Preferences.class.getName()).log(Level.SEVERE, null, ex);
