@@ -47,9 +47,9 @@ public class OntologyApplication {
             }
             if(mf.definido){
                 mf.definido = false;
-                Preferences pf = new Preferences(mf.risco, mf.prazo, mf.tolerancia, mf.area, mf.idade, 
-                        mf.salario, mf.opcao, "sim");
-                pf.createAllPropertiesForInstance();
+                //"false", "bancos", "17", "10000", "casa", "sim");
+                Preferences pf = new Preferences(mf.tolerancia, mf.area, mf.idade, mf.salario, mf.opcao, mf.risco);
+                pf.createProperties();
                 
                 
             }

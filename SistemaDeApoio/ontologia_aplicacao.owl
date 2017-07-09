@@ -304,20 +304,14 @@
     </EquivalentClasses>
     <EquivalentClasses>
         <Class IRI="#LCI"/>
-        <ObjectUnionOf>
-            <ObjectIntersectionOf>
-                <Class IRI="#medioRisco"/>
-                <Class IRI="#toleranciaBaixa"/>
-            </ObjectIntersectionOf>
-            <ObjectIntersectionOf>
-                <Class IRI="#medioRisco"/>
-                <Class IRI="#toleranciaBaixa"/>
-                <ObjectSomeValuesFrom>
-                    <ObjectProperty IRI="#tem_conhencimento_previo"/>
-                    <Class IRI="#conhecimento_mercado_imobiliario"/>
-                </ObjectSomeValuesFrom>
-            </ObjectIntersectionOf>
-        </ObjectUnionOf>
+        <ObjectIntersectionOf>
+            <Class IRI="#medioRisco"/>
+            <Class IRI="#toleranciaBaixa"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#tem_conhencimento_previo"/>
+                <Class IRI="#conhecimento_mercado_imobiliario"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
     </EquivalentClasses>
     <EquivalentClasses>
         <Class IRI="#acoes"/>
@@ -418,20 +412,10 @@
             <ObjectIntersectionOf>
                 <Class IRI="#baixoRisco"/>
                 <Class IRI="#toleranciaAlta"/>
-                <ObjectUnionOf>
-                    <Class IRI="#adulto"/>
-                    <Class IRI="#idoso"/>
-                    <Class IRI="#jovem"/>
-                </ObjectUnionOf>
             </ObjectIntersectionOf>
             <ObjectIntersectionOf>
                 <Class IRI="#baixoRisco"/>
                 <Class IRI="#toleranciaBaixa"/>
-                <ObjectUnionOf>
-                    <Class IRI="#adulto"/>
-                    <Class IRI="#idoso"/>
-                    <Class IRI="#jovem"/>
-                </ObjectUnionOf>
             </ObjectIntersectionOf>
         </ObjectUnionOf>
     </EquivalentClasses>
@@ -957,7 +941,7 @@
     <ObjectPropertyAssertion>
         <ObjectProperty IRI="#faixa_etaria"/>
         <NamedIndividual IRI="#perfil"/>
-        <NamedIndividual IRI="#meia_idade"/>
+        <NamedIndividual IRI="#jovem"/>
     </ObjectPropertyAssertion>
     <ObjectPropertyAssertion>
         <ObjectProperty IRI="#pretensao"/>
@@ -967,7 +951,7 @@
     <ObjectPropertyAssertion>
         <ObjectProperty IRI="#tem_conhencimento_previo"/>
         <NamedIndividual IRI="#perfil"/>
-        <NamedIndividual IRI="#mercado_agricola"/>
+        <NamedIndividual IRI="#bancos"/>
     </ObjectPropertyAssertion>
     <DataPropertyAssertion>
         <DataProperty IRI="#rapido_retorno"/>
@@ -975,14 +959,14 @@
         <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#boolean">true</Literal>
     </DataPropertyAssertion>
     <DataPropertyAssertion>
-        <DataProperty IRI="#tem_pouco_dinheiro"/>
+        <DataProperty IRI="#tem_muito_dinheiro"/>
         <NamedIndividual IRI="#perfil"/>
-        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">1000.0</Literal>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">10000.0</Literal>
     </DataPropertyAssertion>
     <DataPropertyAssertion>
         <DataProperty IRI="#tolerancia_risco"/>
         <NamedIndividual IRI="#perfil"/>
-        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#boolean">true</Literal>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#boolean">false</Literal>
     </DataPropertyAssertion>
     <SubObjectPropertyOf>
         <ObjectProperty IRI="#caracteristicas_do_perfil"/>

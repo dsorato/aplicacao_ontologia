@@ -8,9 +8,9 @@ import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 public class Preferences {
-      private String _risco, _prazo, _tolerancia, _area, _idade, _salario, _opcao, _rendaFixa;
+      private String _risco, _prazo, _tolerancia, _area, _idade, _salario, _opcao, _retorno;
       public Preferences(String risco, String prazo, String tolerancia,
-              String area, String  idade, String  salario, String opcao, String rendaFixa){
+              String area, String  idade, String  salario, String opcao, String retorno){
        this._area = area.toLowerCase();
        this._idade = idade.toLowerCase();
        this._prazo = prazo.toLowerCase();
@@ -18,14 +18,72 @@ public class Preferences {
        this._salario = salario.toLowerCase();
        this._opcao = opcao.toLowerCase();
        this._tolerancia = tolerancia.toLowerCase();
-       this._rendaFixa = rendaFixa.toLowerCase();
+       this._retorno = retorno.toLowerCase();
        
           
       }
-      public static void main(String [] args) throws IOException, Exception{
-          Preferences pf = new Preferences("alto", "longo", "alta", "bolsa_de_valores", "17", "10000", "casa", "sim");
-          pf.createAllPropertiesForInstance();
+      public Preferences(String tolerancia, String area, String  idade, String  salario, String opcao, String retorno){
+       this._area = area.toLowerCase();
+       this._idade = idade.toLowerCase();
+       this._retorno = retorno.toLowerCase();
+       this._salario = salario.toLowerCase();
+       this._opcao = opcao.toLowerCase();
+       this._tolerancia = tolerancia.toLowerCase();
+       
+          
       }
+      
+      public static void main(String [] args) throws IOException, Exception{
+          Preferences pf = new Preferences("false", "bancos", "17", "10000", "casa", "sim");
+          pf.createProperties();
+      }
+      
+      public void createProperties() throws OWLOntologyStorageException, IOException, Exception{
+          String path = "/home/rr/NetBeansProjects/aplicacao_ontologia/SistemaDeApoio/ontologia_aplicacao.owl";
+          OntologyManager om = new OntologyManager();
+          try {
+              System.out.println("area "+_area); //mudar áreas
+              System.out.println("idade "+_idade);
+              
+              System.out.println("risco "+_risco);
+              System.out.println("tolerancia "+_tolerancia);
+              System.out.println(defineFaixaEtaria());
+              System.out.println(defineRetorno());
+              System.out.println(defineDinheiro());
+              
+              om.loadOntology(path);
+              om.createReasoner();
+              om.createPropertyAssertions("faixa_etaria", "i3", defineFaixaEtaria());
+              om.createPropertyAssertions("tem_conhecimento_previo", "i3", defineObjectType(_area));
+              
+              om.createDataProperty("tolerancia_risco", "i3", defineTolerancia(), OWL2Datatype.XSD_BOOLEAN);
+              om.createDataProperty("rapido_retorno", "i3", defineRetorno(), OWL2Datatype.XSD_BOOLEAN);
+              om.createPropertyAssertions("pretensao", "i3", defineObjectType(_opcao));
+              om.createDataProperty(defineDinheiro(), "i3", _salario, OWL2Datatype.XSD_DOUBLE);
+              
+              om.showClassAfterReasoning("i3");
+              //om.showInstancesDataProperty();
+              //om.showInstancesProperties();
+              om.saveOntology();
+              
+          } catch (OWLOntologyCreationException ex) {
+              Logger.getLogger(Preferences.class.getName()).log(Level.SEVERE, null, ex);
+          }
+          
+          
+      }
+      public String defineObjectType(String s){
+          return s.replace(" ", "_");
+                
+      }
+      
+      public String defineTolerancia(){
+          if(_tolerancia.equals("sim")){
+              return "true";
+          }
+          return "false";
+      }
+              
       
       public void createAllPropertiesForInstance() throws OWLOntologyStorageException, IOException, Exception{
           String path = "/home/rr/NetBeansProjects/aplicacao_ontologia/SistemaDeApoio/ontology/ontologia_aplicacao.owl";
@@ -37,14 +95,13 @@ public class Preferences {
               System.out.println("risco "+_risco);
               System.out.println("tolerancia "+_tolerancia);
               System.out.println(defineFaixaEtaria());
-              System.out.println(defineRendaFixa());
               System.out.println(defineRetorno());
               System.out.println(defineDinheiro());
               
               om.loadOntology(path);
               om.createReasoner();
               om.createPropertyAssertions("faixa_etaria", "i3", defineFaixaEtaria());
-              om.createPropertyAssertions("tem_conhecimento_previo", "i3", "Sem_Conhecimento");
+              om.createPropertyAssertions("tem_conhecimento_previo", "i3", "bancos");
               
               om.createDataProperty("tem_risco", "i3", _risco, OWL2Datatype.XSD_STRING);
               om.createDataProperty("tolerancia_risco", "i3", _tolerancia, OWL2Datatype.XSD_STRING);
@@ -76,12 +133,7 @@ public class Preferences {
           }
           return "idoso";
       }
-      public String defineRendaFixa(){
-          if(_rendaFixa.equals("sim")){
-              return "true";
-          }
-          return "false";
-      }
+    
       
       public String defineDinheiro(){
           double valor = Double.parseDouble(_salario);
@@ -95,13 +147,11 @@ public class Preferences {
       }
       
       public String defineRetorno(){
-          if(_opcao.equals("carro") || _opcao.equals("viagem nacional")){
-              return "pequeno";
+          if(_retorno.equals("rapido")){
+              return "true";
           }
-          if(_opcao.equals("casa")){
-              return "grande";
-          }
-          return "medio";
+          return "false";
+          
       }
 
 }
