@@ -88,7 +88,7 @@ public class MainFrame extends javax.swing.JFrame {
         jTextField5.setText("Montante inicial disponível");
 
         jTextField6.setEditable(false);
-        jTextField6.setText("Para cada pergunte, selecione um das opções.");
+        jTextField6.setText("Para cada pergunta, selecione um das opções.");
         jTextField6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField6ActionPerformed(evt);
